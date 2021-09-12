@@ -11,8 +11,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
     
-    var imageNumber = 0;
-    var messageNumber = 0;
+    var imageNumber = -1;
+    var messageNumber = -1;
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,8 +28,25 @@ class ViewController: UIViewController {
         
         
         //Messaging using Random
-        imageView.image = UIImage(named: "image\(Int.random(in: 0...9))");
-        messageLabel.text = messages[Int.random(in:0...(messages.count-1))];
+        
+        var newMessageNumber: Int;
+        repeat
+        {
+            newMessageNumber = Int.random(in:0...(messages.count-1));
+        } while (messageNumber == newMessageNumber )
+        
+        messageNumber = newMessageNumber;
+        messageLabel.text = messages[newMessageNumber];
+        
+        
+        var newImageNumber: Int;
+        repeat
+        {
+            newImageNumber = Int.random(in: 0...9);
+        }while (newImageNumber == imageNumber)
+        
+        imageNumber = newImageNumber;
+        imageView.image = UIImage(named: "image\(newImageNumber)");
         
         
                 // Message array & Images without random

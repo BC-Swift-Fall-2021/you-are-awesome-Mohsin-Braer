@@ -14,6 +14,7 @@ class ViewController: UIViewController {
     
     var imageNumber = -1;
     var messageNumber = -1;
+    var soundNumber = -1;
     var audioPlayer: AVAudioPlayer!;
     
     
@@ -31,39 +32,31 @@ class ViewController: UIViewController {
         
         //Messaging using Random
         
-        var newMessageNumber: Int;
-        repeat
-        {
-            newMessageNumber = Int.random(in:0...(messages.count-1));
-        } while (messageNumber == newMessageNumber )
+        messageNumber = nonRepeatingRandom(original: messageNumber, upperLimit: messages.count);
+        messageLabel.text = messages[messageNumber];
+    
         
-        messageNumber = newMessageNumber;
-        messageLabel.text = messages[newMessageNumber];
+        imageNumber = nonRepeatingRandom(original: imageNumber, upperLimit: 8);
+        imageView.image = UIImage(named: "image\(imageNumber)");
         
         
-        var newImageNumber: Int;
-        repeat
-        {
-            newImageNumber = Int.random(in: 0...9);
-        }while (newImageNumber == imageNumber)
+        soundNumber = nonRepeatingRandom(original: soundNumber, upperLimit: 6)
+        playSound(name: "sound\(soundNumber)");
         
-        imageNumber = newImageNumber;
-        imageView.image = UIImage(named: "image\(newImageNumber)");
-        
-        if let sound = NSDataAsset(name: "sound0"){
-            do{
-                try audioPlayer = AVAudioPlayer(data: sound.data);
-                audioPlayer.play();
-            } catch{
-                print("ERROR: \(error.localizedDescription) Couldn't initializate audioPlayer");
-            }
-            
-        }else
-        {
-            print("ERROR: Couldn't read data from file sound0");
-        }
-        
-        
+        //        if let sound = NSDataAsset(name: "sound0"){
+        //            do{
+        //                try audioPlayer = AVAudioPlayer(data: sound.data);
+        //                audioPlayer.play();
+        //            } catch{
+        //                print("ERROR: \(error.localizedDescription) Couldn't initializate audioPlayer");
+        //            }
+        //
+        //        }else
+        //        {
+        //            print("ERROR: Couldn't read data from file sound0");
+        //        }
+        //
+                
                 // Message array & Images without random
         //        print(imageNumber);
         //        imageView.image = UIImage(named: "image\(imageNumber)");
@@ -100,6 +93,33 @@ class ViewController: UIViewController {
         
         
 
+    }
+    
+    func nonRepeatingRandom(original: Int, upperLimit: Int) -> Int
+    {
+        var newNumber: Int;
+        repeat
+        {
+            newNumber = Int.random(in: 0..<upperLimit);
+        }while (newNumber == original)
+        
+        return newNumber;
+    }
+    
+    func playSound(name: String)
+    {
+        if let sound = NSDataAsset(name: name){
+            do{
+                try audioPlayer = AVAudioPlayer(data: sound.data);
+                audioPlayer.play();
+            } catch{
+                print("ERROR: \(error.localizedDescription) Couldn't initializate audioPlayer");
+            }
+            
+        }else
+        {
+            print("ERROR: Couldn't read data from file sound0");
+        }
     }
 
 

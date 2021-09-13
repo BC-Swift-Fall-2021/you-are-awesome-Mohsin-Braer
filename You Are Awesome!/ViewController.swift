@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class ViewController: UIViewController {
     @IBOutlet weak var messageLabel: UILabel!
@@ -13,6 +14,7 @@ class ViewController: UIViewController {
     
     var imageNumber = -1;
     var messageNumber = -1;
+    var audioPlayer: AVAudioPlayer!;
     
     
     override func viewDidLoad() {
@@ -47,6 +49,19 @@ class ViewController: UIViewController {
         
         imageNumber = newImageNumber;
         imageView.image = UIImage(named: "image\(newImageNumber)");
+        
+        if let sound = NSDataAsset(name: "sound0"){
+            do{
+                try audioPlayer = AVAudioPlayer(data: sound.data);
+                audioPlayer.play();
+            } catch{
+                print("ERROR: \(error.localizedDescription) Couldn't initializate audioPlayer");
+            }
+            
+        }else
+        {
+            print("ERROR: Couldn't read data from file sound0");
+        }
         
         
                 // Message array & Images without random
